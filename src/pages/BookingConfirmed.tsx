@@ -23,6 +23,16 @@ const BookingConfirmed = () => {
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Car Detailing Appointment&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${details}&location=805 N. Kenyon Rd, Edinburg, TX 78539`;
   };
 
+  const formatDisplayDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   if (!bookingData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -63,7 +73,7 @@ const BookingConfirmed = () => {
                 <Calendar className="h-5 w-5 text-blue-600" />
                 <div>
                   <p className="font-medium text-blue-900">Date & Time</p>
-                  <p className="text-blue-700">{bookingData.date} at {bookingData.time}</p>
+                  <p className="text-blue-700">{formatDisplayDate(bookingData.date)} at {bookingData.time}</p>
                 </div>
               </div>
               
