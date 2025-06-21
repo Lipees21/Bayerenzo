@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,8 +18,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Temporary demo login - replace with actual Supabase auth
-    if (email === "admin@bayerenzo.com" && password === "admin123") {
+    if (username === "BayerenzoSexyDudes" && password === "79891Alo!") {
       localStorage.setItem("isAdminAuthenticated", "true");
       window.location.href = "/admin";
       toast({
@@ -29,7 +28,7 @@ const AdminLogin = () => {
     } else {
       toast({
         title: "Login failed",
-        description: "Invalid email or password",
+        description: "Invalid username or password",
         variant: "destructive",
       });
     }
@@ -49,13 +48,13 @@ const AdminLogin = () => {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@bayerenzo.com"
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
                 required
               />
             </div>
@@ -89,9 +88,6 @@ const AdminLogin = () => {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm text-gray-600">
-            Demo credentials: admin@bayerenzo.com / admin123
-          </div>
         </CardContent>
       </Card>
     </div>

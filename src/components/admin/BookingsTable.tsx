@@ -5,15 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Search, Filter } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Booking {
   id: string;
-  name: string;
+  fullName: string;
   phone: string;
   vehicleType: string;
+  service: string;
   date: string;
   time: string;
   locationType: string;
@@ -31,38 +31,21 @@ export const BookingsTable = () => {
   const [vehicleFilter, setVehicleFilter] = useState("all");
   const { toast } = useToast();
 
-  // Mock data - replace with actual API calls
+  // Load bookings from localStorage
   useEffect(() => {
-    const mockBookings: Booking[] = [
-      {
-        id: "1",
-        name: "John Smith",
-        phone: "(956) 123-4567",
-        vehicleType: "Truck",
-        date: "2024-06-25",
-        time: "10:00",
-        locationType: "In-Shop",
-        status: "pending",
-        comments: "Please focus on interior cleaning",
-        price: 125,
-        createdAt: "2024-06-21T10:00:00Z",
-      },
-      {
-        id: "2",
-        name: "Maria Garcia",
-        phone: "(956) 234-5678",
-        vehicleType: "Sedan",
-        date: "2024-06-26",
-        time: "14:00",
-        locationType: "Mobile",
-        status: "confirmed",
-        comments: "",
-        price: 85,
-        createdAt: "2024-06-21T11:30:00Z",
-      },
-    ];
-    setBookings(mockBookings);
-    setFilteredBookings(mockBookings);
+    const loadBookings = () => {
+      const savedBookings = localStorage.getItem("bookings");
+      if (savedBookings) {
+        const parsedBookings = JSON.parse(savedBookings);
+        setBookings(parsedBookings);
+        setFilteredBookings(parsedBookings);
+      }
+    };
+
+    loadBookings();
+    // Set up interval to check for new bookings
+    const interval = setInterval(loadBookings, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -71,7 +54,7 @@ export const BookingsTable = () => {
     if (searchTerm) {
       filtered = filtered.filter(
         (booking) =>
-          booking.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           booking.phone.includes(searchTerm)
       );
     }
@@ -88,11 +71,12 @@ export const BookingsTable = () => {
   }, [bookings, searchTerm, statusFilter, vehicleFilter]);
 
   const updateBookingStatus = (id: string, newStatus: Booking["status"]) => {
-    setBookings((prev) =>
-      prev.map((booking) =>
-        booking.id === id ? { ...booking, status: newStatus } : booking
-      )
+    const updatedBookings = bookings.map((booking) =>
+      booking.id === id ? { ...booking, status: newStatus } : booking
     );
+    setBookings(updatedBookings);
+    localStorage.setItem("bookings", JSON.stringify(updatedBookings));
+    
     toast({
       title: "Status updated",
       description: `Booking status changed to ${newStatus}`,
@@ -100,14 +84,15 @@ export const BookingsTable = () => {
   };
 
   const exportToCSV = () => {
-    const headers = ["Name", "Phone", "Vehicle", "Date", "Time", "Location", "Status", "Price", "Comments"];
+    const headers = ["Name", "Phone", "Vehicle", "Service", "Date", "Time", "Location", "Status", "Price", "Comments"];
     const csvContent = [
       headers.join(","),
       ...filteredBookings.map((booking) =>
         [
-          booking.name,
+          booking.fullName,
           booking.phone,
           booking.vehicleType,
+          booking.service,
           booking.date,
           booking.time,
           booking.locationType,
@@ -178,8 +163,8 @@ export const BookingsTable = () => {
           <SelectContent>
             <SelectItem value="all">All Vehicles</SelectItem>
             <SelectItem value="Sedan">Sedan</SelectItem>
-            <SelectItem value="Truck">Truck</SelectItem>
             <SelectItem value="SUV">SUV</SelectItem>
+            <SelectItem value="Truck">Truck</SelectItem>
           </SelectContent>
         </Select>
         <Button onClick={exportToCSV} variant="outline">
@@ -194,6 +179,7 @@ export const BookingsTable = () => {
             <TableRow>
               <TableHead>Customer</TableHead>
               <TableHead>Vehicle</TableHead>
+              <TableHead>Service</TableHead>
               <TableHead>Date & Time</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Status</TableHead>
@@ -206,14 +192,15 @@ export const BookingsTable = () => {
               <TableRow key={booking.id}>
                 <TableCell>
                   <div>
-                    <div className="font-medium">{booking.name}</div>
+                    <div className="font-medium">{booking.fullName}</div>
                     <div className="text-sm text-gray-600">{booking.phone}</div>
                   </div>
                 </TableCell>
                 <TableCell>{booking.vehicleType}</TableCell>
+                <TableCell>{booking.service}</TableCell>
                 <TableCell>
                   <div>
-                    <div>{booking.date}</div>
+                    <div>{new Date(booking.date).toLocaleDateString()}</div>
                     <div className="text-sm text-gray-600">{booking.time}</div>
                   </div>
                 </TableCell>

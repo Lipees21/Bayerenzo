@@ -20,7 +20,7 @@ export const BookingForm = () => {
     fullName: "",
     phone: "",
     vehicleType: "",
-    service: "Interior + Exterior Detailing",
+    service: "",
     date: undefined as Date | undefined,
     time: "",
     locationType: "",
@@ -33,16 +33,26 @@ export const BookingForm = () => {
   ];
 
   const getPrice = () => {
-    if (formData.vehicleType === "Truck" || formData.vehicleType === "SUV") {
-      return 125;
-    } else if (formData.vehicleType === "Sedan") {
-      return 85;
+    if (!formData.vehicleType || !formData.service) return 0;
+    
+    if (formData.vehicleType === "Truck") {
+      if (formData.service === "Interior + Exterior Detailing") {
+        return 125;
+      } else {
+        return 100; // Interior or Exterior only
+      }
+    } else if (formData.vehicleType === "Sedan" || formData.vehicleType === "SUV") {
+      if (formData.service === "Interior + Exterior Detailing") {
+        return 100;
+      } else {
+        return 85; // Interior or Exterior only
+      }
     }
     return 0;
   };
 
   const validateForm = () => {
-    const requiredFields = ['fullName', 'phone', 'vehicleType', 'date', 'time', 'locationType'];
+    const requiredFields = ['fullName', 'phone', 'vehicleType', 'service', 'date', 'time', 'locationType'];
     
     for (const field of requiredFields) {
       if (!formData[field as keyof typeof formData]) {
@@ -102,10 +112,15 @@ export const BookingForm = () => {
     const bookingData = {
       ...formData,
       price: getPrice(),
-      status: "Pending",
+      status: "pending",
       createdAt: new Date().toISOString(),
-      id: Date.now().toString() // Simple ID for demo purposes
+      id: Date.now().toString()
     };
+
+    // Store booking in localStorage for admin dashboard
+    const existingBookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+    existingBookings.push(bookingData);
+    localStorage.setItem("bookings", JSON.stringify(existingBookings));
 
     console.log("Booking submitted:", bookingData);
     
@@ -180,19 +195,24 @@ export const BookingForm = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Sedan">Sedan</SelectItem>
-                        <SelectItem value="Truck">Truck</SelectItem>
                         <SelectItem value="SUV">SUV</SelectItem>
+                        <SelectItem value="Truck">Truck</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label>Service Type</Label>
-                    <Input
-                      value={formData.service}
-                      readOnly
-                      className="bg-gray-50"
-                    />
+                    <Label>Service Type *</Label>
+                    <Select onValueChange={(value) => setFormData({...formData, service: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select service type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Interior Detailing">Interior Detailing</SelectItem>
+                        <SelectItem value="Exterior Detailing">Exterior Detailing</SelectItem>
+                        <SelectItem value="Interior + Exterior Detailing">Interior + Exterior Detailing</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
@@ -269,7 +289,7 @@ export const BookingForm = () => {
                   />
                 </div>
 
-                {formData.vehicleType && (
+                {formData.vehicleType && formData.service && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                     <div className="flex items-center gap-3 text-green-800">
                       <DollarSign className="h-5 w-5" />
