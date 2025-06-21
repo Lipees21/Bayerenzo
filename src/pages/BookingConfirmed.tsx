@@ -2,7 +2,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Phone, MapPin, CheckCircle } from "lucide-react";
+import { Calendar, Phone, MapPin, CheckCircle, Mail, MessageSquare } from "lucide-react";
 
 const BookingConfirmed = () => {
   const location = useLocation();
@@ -68,6 +68,24 @@ const BookingConfirmed = () => {
           </CardHeader>
           
           <CardContent className="p-6 space-y-6">
+            {/* Confirmation Messages */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                <Mail className="h-5 w-5" />
+                Confirmation Messages
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-blue-700">
+                  <Mail className="h-4 w-4" />
+                  <span>Email confirmation sent to your registered email</span>
+                </div>
+                <div className="flex items-center gap-2 text-blue-700">
+                  <MessageSquare className="h-4 w-4" />
+                  <span>SMS confirmation sent to {bookingData.phone}</span>
+                </div>
+              </div>
+            </div>
+
             <div className="grid gap-4">
               <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
                 <Calendar className="h-5 w-5 text-blue-600" />

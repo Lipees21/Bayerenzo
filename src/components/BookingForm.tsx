@@ -37,15 +37,15 @@ export const BookingForm = () => {
     
     if (formData.vehicleType === "Truck") {
       if (formData.service === "Interior + Exterior Detailing") {
-        return 125;
+        return 125; // Truck: both services
       } else {
-        return 100; // Interior or Exterior only
+        return 100; // Truck: single service (interior or exterior)
       }
     } else if (formData.vehicleType === "Sedan" || formData.vehicleType === "SUV") {
       if (formData.service === "Interior + Exterior Detailing") {
-        return 100;
+        return 100; // Sedan/SUV: both services
       } else {
-        return 85; // Interior or Exterior only
+        return 85; // Sedan/SUV: single service (interior or exterior)
       }
     }
     return 0;
