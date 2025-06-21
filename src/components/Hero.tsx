@@ -21,11 +21,11 @@ export const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Professional Car
+                Bayerenzo Car
                 <span className="text-orange-400"> Detailing</span>
               </h1>
               <p className="text-xl text-blue-100">
-                Premium car detailing services in Edinburg, TX. We bring showroom quality to your vehicle with our expert interior and exterior detailing.
+                Car detailing services in Edinburg, TX. We bring showroom quality to your vehicle with our expert interior and exterior detailing.
               </p>
             </div>
             
@@ -64,8 +64,8 @@ export const Hero = () => {
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
                   <div>
-                    <h4 className="font-semibold">Expert Technicians</h4>
-                    <p className="text-blue-100">Trained professionals with years of experience</p>
+                    <h4 className="font-semibold">Driven by Passion</h4>
+                    <p className="text-blue-100">We're dedicated every detail matters to us.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

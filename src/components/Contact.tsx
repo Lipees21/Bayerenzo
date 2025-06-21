@@ -97,7 +97,7 @@ export const Contact = () => {
           <div className="bg-blue-600 text-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
             <p className="text-blue-100 mb-6 text-lg">
-              Professional car detailing service with guaranteed satisfaction. 
+              Car detailing service with guaranteed satisfaction. 
               Book your appointment today and see the difference quality makes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

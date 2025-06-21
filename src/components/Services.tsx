@@ -6,7 +6,7 @@ export const Services = () => {
   const services = [
     {
       icon: Car,
-      title: "Sedan Detailing",
+      title: "Sedan/Suv Detailing",
       price: "$85",
       description: "Complete interior and exterior detailing for sedans and compact cars",
       features: [
@@ -19,7 +19,7 @@ export const Services = () => {
     },
     {
       icon: Truck,
-      title: "Truck/SUV Detailing",
+      title: "Truck Detailing",
       price: "$125",
       description: "Comprehensive detailing service for larger vehicles",
       features: [
@@ -41,7 +41,7 @@ export const Services = () => {
             Our Services
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Professional car detailing services with attention to every detail. 
+            Car detailing services with attention to every detail. 
             Both in-shop and mobile options available.
           </p>
         </div>

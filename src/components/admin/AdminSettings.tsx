@@ -86,7 +86,7 @@ export const AdminSettings = () => {
             />
           </div>
           <div>
-            <Label htmlFor="truckSuvPrice">Truck/SUV Price ($)</Label>
+            <Label htmlFor="truckSuvPrice">Truck Price ($)</Label>
             <Input
               id="truckSuvPrice"
               type="number"
